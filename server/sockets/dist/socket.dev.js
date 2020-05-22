@@ -22,12 +22,14 @@ io.on('connect', function (client) {
     client.join(usuario.sala);
     usuarios.agregarPersona(client.id, usuario.nombre, usuario.sala);
     client.broadcast.to(usuario.sala).emit('listaPersona', usuarios.getPersonasPorSala(usuario.sala));
+    client.broadcast.to(usuario.sala).emit('crearMensaje', crearMensaje('Administrador', "".concat(usuario.nombre, " se unio")));
     callback(usuarios.getPersonasPorSala(usuario.sala));
   });
-  client.on('crearMensaje', function (data) {
+  client.on('crearMensaje', function (data, callback) {
     var persona = usuarios.getPersona(client.id);
     var mensaje = crearMensaje(persona.nombre, data.mensaje);
     client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
+    callback(mensaje);
   });
   client.on('disconnect', function () {
     var perrsonaBorrada = usuarios.borrarPersona(client.id);
