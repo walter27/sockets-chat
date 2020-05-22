@@ -1,0 +1,1 @@
+"use strict";var crearMensaje=function(e,r){return{nombre:e,mensaje:r,fecha:(new Date).getTime()}};module.exports={crearMensaje:crearMensaje};
